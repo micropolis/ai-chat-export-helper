@@ -1,0 +1,27 @@
+{
+  "description": "Integrate the Micropolis product support pages into your browser",
+  "manifest_version": 2,
+  "name": "AI Chat Exporter",
+  "short_name": "ai-chat-exporter",
+  "version": "0.1",
+  "homepage_url": "https://www.micropolis.com/ai",
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "@ai-chat-exporter",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "*://copilot.microsoft.com/*",
+        "*://www.copilot.com/*"
+      ],
+      "js": ["ai-chat-exporter.js"]
+    }
+  ]
+}
