@@ -1,9 +1,9 @@
 {
-  "description": "Integrate the Micropolis product support pages into your browser",
+  "description": "Save your AI chats with Copilot to plain-text or JSON files.",
   "manifest_version": 2,
-  "name": "AI Chat Exporter",
-  "short_name": "ai-chat-exporter",
-  "version": "0.1",
+  "name": "AI Chat Export Helper",
+  "short_name": "ai-chat-export-helper",
+  "version": "0.2",
   "homepage_url": "https://www.micropolis.com/ai",
 
   "browser_specific_settings": {

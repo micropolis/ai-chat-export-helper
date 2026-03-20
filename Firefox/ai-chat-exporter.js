@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         AI Chat Exporter
+// @name         AI Chat Export Helper
 // @namespace    https://greasyfork.org/
-// @version      0.1
+// @version      0.2
 // @description  Export your Microsoft Copilot chat as plain text or JSON with one click.
 // @author       Micropolis AI Team
 // @match        https://copilot.microsoft.com/*
