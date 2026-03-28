@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AI Chat Export Helper
 // @namespace    https://greasyfork.org/
-// @version      0.2
+// @version      0.3
 // @description  Export your Microsoft Copilot chat as plain text or JSON with one click.
 // @author       Micropolis AI Team
 // @match        https://copilot.microsoft.com/*
@@ -166,6 +166,18 @@
         transition: transform 0.2s cubic-bezier(.3,2,.5,1), box-shadow 0.2s;
         user-select: none;
       }
+
+      @media (max-width: 767px) {
+        #ce-fab {
+          top: 10px !important;
+          bottom: auto !important;
+          width: 35px !important;
+          height: 35px !important;
+          right: 50px !important;
+          font-size: 80%;
+        }
+      }
+
       #ce-fab:hover {
         transform: scale(1.12);
         box-shadow: 0 8px 28px rgba(15,108,189,0.6);
