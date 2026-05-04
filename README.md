@@ -4,13 +4,13 @@
 
 ## Overview
 
-**AI Chat Export Helper** is a lightweight browser extension designed for AI enthusiasts and developers alike. Many online AI chat platforms - like Microsoft Copilot - don't natively allow users to download, export, or save their AI conversations. This add-on changes that. With a single click, you can instantly download your AI chat as a **plain text** or **JSON** file, making it perfect for archiving, sharing, or analyzing your AI interactions.  
+**AI Chat Export Helper** is a lightweight browser extension designed for AI enthusiasts and developers alike. Many online AI chat platforms - like Microsoft Copilot and OpenAI's ChatGPT - don't natively allow users to download, export, or save their AI conversations. This add-on changes that. With a single click, you can instantly download your AI chat as a **plain text** or **JSON** file, making it perfect for archiving, sharing, or analyzing your AI interactions.  
 
 Whether you're working on AI projects, collecting datasets, or just want to keep a record of your conversations with intelligent agents, this add-on integrates seamlessly into your workflow.
 
 ## Features
 
-- Adds a **small, unobtrusive button** at the lower-right corner of Microsoft Copilot. More services planned.
+- Adds a **small, unobtrusive button** at the lower-right corner of Microsoft Copilot and ChatGPT. More services planned.
 - Export your AI conversations in **plain text** or **JSON format** for easy processing.
 - Optimized for **performance**, ensuring it won’t slow down your AI chat experience.
 - Perfect for **AI researchers, developers, and data enthusiasts** looking to archive conversations.
