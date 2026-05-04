@@ -14,7 +14,7 @@ Whether you're working on AI projects, collecting datasets, or just want to keep
 - Export your AI conversations in **plain text** or **JSON format** for easy processing.
 - Optimized for **performance**, ensuring it won’t slow down your AI chat experience.
 - Perfect for **AI researchers, developers, and data enthusiasts** looking to archive conversations.
-- Works with current Copilot AI chat layout, and does not altering its core functionality.
+- Works with current ChatGPT and Copilot AI chat layout, and does not alter its core functionality.
 
 ## Why Use This Add-On?
 
