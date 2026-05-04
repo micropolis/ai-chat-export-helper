@@ -3,7 +3,7 @@
   "manifest_version": 2,
   "name": "AI Chat Export Helper",
   "short_name": "ai-chat-export-helper",
-  "version": "0.2",
+  "version": "0.4",
   "homepage_url": "https://www.micropolis.com/ai",
 
   "browser_specific_settings": {
@@ -19,7 +19,9 @@
     {
       "matches": [
         "*://copilot.microsoft.com/*",
-        "*://www.copilot.com/*"
+        "*://www.copilot.com/*",
+        "*://chatgpt.com/*",
+        "*://chat.openai.com/*"
       ],
       "js": ["ai-chat-exporter.js"]
     }

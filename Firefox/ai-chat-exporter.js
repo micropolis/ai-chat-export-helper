@@ -1,17 +1,21 @@
 // ==UserScript==
 // @name         AI Chat Export Helper
 // @namespace    https://greasyfork.org/
-// @version      0.3
-// @description  Export your Microsoft Copilot chat as plain text or JSON with one click.
+// @version      0.4
+// @description  Export your Microsoft Copilot and ChatGPT chat as plain text or JSON with one click.
 // @author       Micropolis AI Team
 // @match        https://copilot.microsoft.com/*
 // @match        https://www.copilot.com/*
+// @match        https://chatgpt.com/*
+// @match        https://chat.openai.com/*
 // @run-at       document-end
 // @grant        none
 // ==/UserScript==
 
 (function() {
 	'use strict';
+
+	var SITE;
 
 	function getChatContainer() {
 		const main = document.querySelector('main');
@@ -145,6 +149,66 @@
 			URL.revokeObjectURL(url);
 		}, 500);
 	}
+  
+  function extractChatGpt() {
+    const turns = document.querySelectorAll('section[data-turn]');
+    const messages = [];
+
+    turns.forEach((section, index) => {
+      const role = section.getAttribute('data-turn'); // "user" or "assistant"
+
+      let text = '';
+
+      if (role === 'user') {
+        // User messages live in a .whitespace-pre-wrap div
+        const bubble = section.querySelector('.whitespace-pre-wrap');
+        if (bubble) text = bubble.innerText.trim();
+
+      } else if (role === 'assistant') {
+        // Assistant messages live in the .markdown prose div
+        const markdown = section.querySelector('.markdown');
+        if (markdown) {
+          // Get plain text, stripping any inline UI chrome (citation pills, buttons, etc.)
+          // Clone so we don't disturb the DOM
+          const clone = markdown.cloneNode(true);
+
+          // Remove citation pill spans (the little source badges)
+          clone.querySelectorAll('[data-testid="webpage-citation-pill"]').forEach(el => el.remove());
+          // Remove any SVG icons or buttons that leaked in
+          clone.querySelectorAll('svg, button, input').forEach(el => el.remove());
+
+          text = clone.innerText.trim();
+        }
+      }
+
+      if (text) {
+        messages.push({
+          index: messages.length + 1,
+          role: role === 'assistant' ? 'assistant' : 'user',
+          text
+        });
+      }
+    });
+
+    return messages;
+  }
+   function convertChatGptJsonToText(chatJson) {
+     console.log(chatJson);
+    const lines = [];
+
+    for (const msg of chatJson.conversation) {
+        const divider = '═══════════════════════════';
+        const separator = '───────────────────────────';
+        const speaker = msg.role === 'user' ? 'YOU' : 'CHATGPT';
+
+        lines.push(`\n\n${divider}\n${speaker}:\n${separator}\n${msg.text}\n`);
+    }
+
+    let result = lines.join('');
+    result = result.replace(/\n{3,}/g, '\n\n');
+    result = result.trim();
+    return result;
+}
 
 	function injectStyles() {
 		const style = document.createElement('style');
@@ -153,7 +217,7 @@
         position: fixed !important;
         bottom: 90px !important;
         right: 26px !important;
-        z-index: 2147483647 !important;
+        z-index: 30 !important;
         width: 50px; height: 50px;
         border-radius: 50%;
         border: none;
@@ -175,6 +239,18 @@
           height: 35px !important;
           right: 50px !important;
           font-size: 80%;
+        }
+      }
+      @media (prefers-color-scheme: dark) {
+        #ce-fab {
+          background-color: transparent;
+        }
+        #ce-fab:hover {
+          background-color: #ffffff14;
+        }
+        #ce-fab .ce-tip {
+          background-color: #282d3a !important;
+          color: #eee !important;
         }
       }
 
@@ -299,6 +375,14 @@
 
 	function injectUI() {
 		if (document.getElementById('ce-fab')) return;
+    
+    // 1 = ChatGPT, 2 = Copilot
+    SITE = (() => {
+      const h = location.hostname;
+      if (h === 'chatgpt.com' || h === 'chat.openai.com') return 2;
+      if (h === 'copilot.microsoft.com' || h === 'www.copilot.com') return 1;
+      return 0; // unknown
+    })();
 
 		const fab = document.createElement('button');
 		fab.id = 'ce-fab';
@@ -351,9 +435,32 @@
 		const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
 
 		if (format === 'json') {
-			downloadFile(convertToJSON(clonedElem), `copilot-chat-${timestamp}.json`, 'application/json');
+      if(SITE === 2){
+              const messages = extractChatGpt();
+
+              if (!messages.length) {
+                alert('No chat messages found on this page.');
+                return;
+              }
+
+              const json = JSON.stringify({ conversation: messages }, null, 2);
+              downloadFile(json,`chatgpt-chat-${timestamp}.json`, 'application/json');
+      }else{
+				downloadFile(convertToJSON(clonedElem), `copilot-chat-${timestamp}.json`, 'application/json');
+      }
 		} else {
-			downloadFile(convertToText(clonedElem), `copilot-chat-${timestamp}.txt`, 'text/plain');
+      if(SITE === 2){
+              const messages = extractChatGpt();
+
+              if (!messages.length) {
+                alert('No chat messages found on this page.');
+                return;
+              }
+
+              downloadFile(convertChatGptJsonToText({ conversation: messages }),`chatgpt-chat-${timestamp}.txt`, 'text/plain');
+      }else{
+			      downloadFile(convertToText(clonedElem), `copilot-chat-${timestamp}.txt`, 'text/plain');
+      }
 		}
 	}
 
